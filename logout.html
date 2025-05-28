@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Home - Logged In</title>
+  <style>
+    body {
+      background-color: #1b1b2f;
+      color: white;
+      font-family: Arial, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+
+    h1 {
+      color: #ffc107;
+    }
+
+    button {
+      background-color: #ffc107;
+      color: black;
+      border: none;
+      padding: 10px 20px;
+      font-size: 1rem;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Welcome to the site!</h1>
+  <p>You’re logged in 🎉</p>
+
+  <button onclick="logout()">Logout</button>
+
+  <script>
+    // Make sure the user is logged in before showing content
+    if (localStorage.getItem("isLoggedIn") !== "true") {
+      window.location.href = "signout.html"; // Change to your login page
+    }
+
+    function logout() {
+      localStorage.removeItem("isLoggedIn");
+      window.location.href = "signout.html"; // Redirect back to login
+    }
+  </script>
+
+</body>
+</html>

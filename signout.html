@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Login / Sign Up</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(-45deg, #0f0c29, #302b63, #24243e, #0f0c29);
+      background-size: 400% 400%;
+      animation: backgroundShift 15s ease infinite;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: white;
+    }
+
+    @keyframes backgroundShift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    .form-box {
+      background-color: rgba(0, 0, 0, 0.8);
+      padding: 2rem;
+      border-radius: 10px;
+      box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+      text-align: center;
+      width: 300px;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border-radius: 5px;
+      border: none;
+    }
+
+    button {
+      background-color: #ffc107;
+      border: none;
+      padding: 10px 20px;
+      margin-top: 10px;
+      cursor: pointer;
+      border-radius: 5px;
+      font-weight: bold;
+    }
+
+    .switch-link {
+      color: #ffc107;
+      cursor: pointer;
+      display: block;
+      margin-top: 1rem;
+      font-size: 0.9rem;
+      text-decoration: underline;
+    }
+
+    #signupForm {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Login Form -->
+  <div class="form-box" id="loginForm">
+    <h2>Login to Continue</h2>
+    <input type="text" id="loginUsername" placeholder="Enter username" required />
+    <input type="password" id="loginPassword" placeholder="Enter password" required />
+    <button onclick="login()">Login</button>
+    <p id="loginMessage"></p>
+    <span class="switch-link" onclick="showSignup()">Don’t have an account? Sign up here</span>
+  </div>
+
+  <!-- Sign Up Form -->
+  <div class="form-box" id="signupForm">
+    <h2>Create Account</h2>
+    <input type="text" id="signupUsername" placeholder="Choose username" required />
+    <input type="password" id="signupPassword" placeholder="Choose password" required />
+    <button onclick="signup()">Sign Up</button>
+    <p id="signupMessage"></p>
+    <span class="switch-link" onclick="showLogin()">Already have an account? Back to login</span>
+  </div>
+
+  <script>
+    function login() {
+      const username = document.getElementById("loginUsername").value.trim();
+      const password = document.getElementById("loginPassword").value;
+      const users = JSON.parse(localStorage.getItem("users") || "{}");
+
+      if (!username || !password) {
+        document.getElementById("loginMessage").textContent = "Please enter both username and password.";
+        return;
+      }
+
+      if (users[username] && users[username] === password) {
+        localStorage.setItem("isLoggedIn", "true");
+        document.getElementById("loginMessage").style.color = "lightgreen";
+        document.getElementById("loginMessage").textContent = "Login successful! Redirecting...";
+        setTimeout(() => {
+          window.location.href = "home.html"; // Change this to your home page
+        }, 1000);
+      } else {
+        document.getElementById("loginMessage").style.color = "red";
+        document.getElementById("loginMessage").textContent = "Incorrect details. Try again or sign up.";
+      }
+    }
+
+    function signup() {
+      const username = document.getElementById("signupUsername").value.trim();
+      const password = document.getElementById("signupPassword").value;
+      const signupMessage = document.getElementById("signupMessage");
+      const users = JSON.parse(localStorage.getItem("users") || "{}");
+
+      if (!username || !password) {
+        signupMessage.textContent = "Both fields are required.";
+        return;
+      }
+
+      if (users[username]) {
+        signupMessage.textContent = "Username already exists.";
+      } else {
+        users[username] = password;
+        localStorage.setItem("users", JSON.stringify(users));
+        signupMessage.style.color = "lightgreen";
+        signupMessage.textContent = "Account created! Now log in.";
+        setTimeout(() => {
+          showLogin();
+        }, 1000);
+      }
+    }
+
+    function showSignup() {
+      document.getElementById("loginForm").style.display = "none";
+      document.getElementById("signupForm").style.display = "block";
+    }
+
+    function showLogin() {
+      document.getElementById("signupForm").style.display = "none";
+      document.getElementById("loginForm").style.display = "block";
+    }
+  </script>
+
+</body>
+</html>
+
